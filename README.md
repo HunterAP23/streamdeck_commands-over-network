@@ -17,7 +17,7 @@ This project aims to extend the abilities of the PESDL to work on a user's regis
 
 # Objectives
   1. Make secure socket connection between two or more devices.
-    * Requires handshaking when connection is made.
+    - Requires handshaking when connection is made.
   2. Send PESDL-defined command name over the network to another device.
     - Needs security validations before sending command name.
     - Packets need to be encrypted by the sending device.
@@ -32,5 +32,6 @@ This project aims to extend the abilities of the PESDL to work on a user's regis
   - [Python Elgato Stream Deck Library](https://github.com/abcminiuser/python-elgato-streamdeck) & it's requirements:
     - hidapi==0.7.99.post21
     - Pillow>=5.0.0
+
 The Python package for PESDL is already included in the requirements.txt file.
 To install the requirements, run `pip install -r requirements.txt`
