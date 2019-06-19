@@ -1,119 +1,36 @@
-# Python Elgato Stream Deck Library
+# StreamDeck Commands-Over-Network
+Send StreamDeck commands to other computers over an internet connection.
 
-![Example Deck](ExampleDeck.jpg)
+# Outline
+Inspired from the [Streaming Remote](https://github.com/fredemmott/streaming-remote)
+plugin for the Elgato StreamDeck, I wanted to look into sending StreamDeck
+commands from one computer to another.
+My first idea was to imitate the method the Streaming Remote project used,
+which is to use custom webhooks to access OBS and xSplit remotely, but making
+a system for users to create their own webhooks would be really tedious.
 
-This is an open source Python 3 library to control an
-[Elgato Stream Deck](https://www.elgato.com/en/gaming/stream-deck) directly,
-without the official software. This can allow you to create your own custom
-front-ends, such as a custom control front-end for home automation software.
+That's when I came across another StreamDeck plugin, the [Python Elgato Stream Deck Library](https://github.com/abcminiuser/python-elgato-streamdeck) (will be
+referred to as PESDL from now on for brevity ), which nearly solves the issue of
+allowing users to create their own commands to be mapped to a StreamDeck button.
 
-[PyPi Project Entry](https://pypi.org/project/streamdeck/)
+This project aims to extend the abilities of the PESDL to work on a user's registered devices over an internet connection.
 
-[Online Documentation](https://python-elgato-streamdeck.readthedocs.io)
+# Objectives
+  1. Make secure socket connection between two or more devices.
+    * Requires handshaking when connection is made.
+  2. Send PESDL-defined command name over the network to another device.
+    - Needs security validations before sending command name.
+    - Packets need to be encrypted by the sending device.
+  3. Receiving device will run that command based on the name.
+    - Packets need to be decrypted by the receiving device.
+    - Commands need to be validated prior to being run (similar to SQL DB
+      validation).
 
-## Credits:
-
-I've used the reverse engineering notes from
-[this GitHub](https://github.com/Lange/node-elgato-stream-deck/blob/master/NOTES.md)
-repository to implement this library. Thanks Alex Van Camp!
-
-Initial StreamDeck Mini support added by [Aetherdyne](https://github.com/Aetherdyne).
-
-## Status:
-
-Working - you can enumerate devices, set the brightness of the panel(s), set
-the images shown on each button, and read the current button states.
-
-Currently both the StreamDeck and StreamDeck Mini products are supported.
-
-## Dependencies:
-
-The library core has no special dependencies, but does use one of (potentially)
-several HID backend libraries. You will need to install the dependencies
-appropriate to your chosen backend.
-
-The included example requires the PIL fork "Pillow", although it can be swapped
-out if desired by the user application for any other image manipulation library.
-
-To install all library dependencies at once, run:
-```
-pip install -r requirements.txt
-```
-
-### HIDAPI Backend
-The default backend is the HIDAPI Python library, which should work across
-the three major (Windows, Mac, Linux) OSes.
-
-## Package Installation:
-
-Install the library via pip:
-
-```
-pip install streamdeck
-```
-
-Alternatively, manually clone the project repository:
-```
-git clone https://github.com/abcminiuser/python-elgato-streamdeck.git
-```
-
-## Raspberry Pi Installation:
-
-The following script has been verified working on a Raspberry Pi (Model 2 B)
-running a stock Debian Stretch image, to install all the required dependencies
-needed by this project:
-
-```
-# Ensure system is up to date, upgrade all out of date packages
-sudo apt update && sudo apt dist-upgrade -y
-
-# Install the pip Python package manager
-sudo apt install -y python3-pip
-
-# Install system packages needed for the Python hidapi package installation
-sudo apt install -y libudev-dev libusb-1.0-0-dev
-
-# Install dependencies
-pip3 install hidapi
-
-# Add udev rule to allow all users non-root access to Elgato StreamDeck devices:
-sudo tee /etc/udev/rules.d/10-streamdeck.rules << EOF
-	SUBSYSTEMS=="usb", ATTRS{idVendor}=="0fd9", ATTRS{idProduct}=="0060", GROUP="users"
-	SUBSYSTEMS=="usb", ATTRS{idVendor}=="0fd9", ATTRS{idProduct}=="0063", GROUP="users"
-	EOF
-
-# Install the latest version of the StreamDeck library via pip
-pip3 install streamdeck
-
-# Alternatively, install git and check out the repository
-#sudo apt install -y git
-#git clone https://github.com/abcminiuser/python-elgato-streamdeck.git
-```
-
-Note that after adding the `udev` rule, a restart will be required in order for
-it to take effect and allow access to the StreamDeck device without requiring
-root privileges.
-
-## License:
-
-Released under the MIT license:
-
-```
-Permission to use, copy, modify, and distribute this software
-and its documentation for any purpose is hereby granted without
-fee, provided that the above copyright notice appear in all
-copies and that both that the copyright notice and this
-permission notice and warranty disclaimer appear in supporting
-documentation, and that the name of the author not be used in
-advertising or publicity pertaining to distribution of the
-software without specific, written prior permission.
-
-The author disclaims all warranties with regard to this
-software, including all implied warranties of merchantability
-and fitness.  In no event shall the author be liable for any
-special, indirect or consequential damages or any damages
-whatsoever resulting from loss of use, data or profits, whether
-in an action of contract, negligence or other tortious action,
-arising out of or in connection with the use or performance of
-this software.
-```
+# Requirements
+  - Python 3 (prefer newest stable version).
+  - pycrypto==2.6.1 for encryption.
+  - [Python Elgato Stream Deck Library](https://github.com/abcminiuser/python-elgato-streamdeck) & it's requirements:
+    - hidapi==0.7.99.post21
+    - Pillow>=5.0.0
+The Python package for PESDL is already included in the requirements.txt file.
+To install the requirements, run `pip install -r requirements.txt`

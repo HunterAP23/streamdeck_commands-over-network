@@ -7,12 +7,12 @@ with open("README.md", 'r') as f:
     long_description = f.read()
 
 setuptools.setup(
-   name='streamdeck',
+   name='streamdeck-commands-over-network',
    version=version,
-   description='Library to control Elgato StreamDeck devices.',
-   author='Dean Camera',
-   author_email='dean@fourwalledcubicle.com',
-   url='https://github.com/abcminiuser/python-elgato-streamdeck',
+   description='Send StreamDeck commands to other computers over an internet connection.',
+   author='Etgar Kaspi',
+   author_email='etgarkaspi@gmail.com',
+   url='https://github.com/HunterAP23/streamdeck_commands-over-network',
    package_dir={'': 'src'},
    packages=setuptools.find_packages(where='src'),
    install_requires=[],
