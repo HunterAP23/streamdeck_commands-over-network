@@ -1,4 +1,4 @@
 pycrypto==2.6.1
 Pillow==8.0.1
 StreamDeck==0.8.3
-hidapi==0.10.0.post1
+hidapi==0.10.1
