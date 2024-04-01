@@ -1,4 +1,4 @@
 cryptography==42.0.5
 hidapi==0.14.0
 streamdeck==0.9.5
-Pillow==10.2.0
+Pillow==10.3.0
